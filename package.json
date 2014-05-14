@@ -4,9 +4,7 @@
     "category": "Custom Widgets",
     "iconPath": "/icons/widget.png",
     "author": "Walid Elkaddouri",
-    "contributors": [
-        "Walid Elkaddouri"
-    ],
+    "contributors": ["Walid Elkaddouri"],
     "version": "1.0.0",
     "copyright": "(c) 2014 Widget Developer",
     "repository": {
@@ -14,13 +12,29 @@
         "url": "https://github.com/developer/Widget.git"
     },
     "keywords": ["wakanda", "widget"],
-    "engines": {"wakanda": ">= 8"},
+    "engines": {
+        "wakanda": ">= 8"
+    },
     "license": "MIT",
-    "loadDependencies": [
-        {"id": "Widget_V2"},
-        {"id": "ChartJS/lib/flotr2.min.js", "version": "1.0.0", "path": "WIDGETS_CUSTOM"},
-        {"id": "ChartJS/widget.js", "version": "1.0.0", "path": "WIDGETS_CUSTOM"},
-        {"id": "ChartJS/css/widget.css", "version": "1.0.0", "path": "WIDGETS_CUSTOM"},
-        {"id": "ChartJS/designer.js", "studioOnly": true, "version": "1.0.0", "path": "WIDGETS_CUSTOM"}
-    ]
+    "loadDependencies": [{
+        "id": "Widget_V2"
+    }, {
+        "id": "ChartJS/lib/flotr2.min.js",
+        "version": "1.0.0",
+        "path": "WIDGETS_CUSTOM"
+    }, {
+        "id": "ChartJS/widget.js",
+        "version": "1.0.0",
+        "path": "WIDGETS_CUSTOM"
+    }, {
+        "id": "ChartJS/css/widget.css",
+        "version": "1.0.0",
+        "path": "WIDGETS_CUSTOM"
+    }, {
+        "id": "ChartJS/designer.js",
+        "studioOnly": true,
+        "version": "1.0.0",
+        "path": "WIDGETS_CUSTOM"
+    }],
+    "hash": "1153615d91cff9c0aa60fddd2fb9b810e58bb78d"
 }

@@ -29,26 +29,94 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
             type: 'boolean',
             defaultValue: false
         }),
+        explode: widget.property({
+            type: 'integer',
+            defaultValue: 6
+        }),
         init: function() {
             var $node = this.node;
-            this.render($node,this.verticalLines(), this.horizontalLines(),this.track());
-
-            //alert(this.chartType());
+            var items = this.items();
+            if(typeof window.Designer!='undefined'){
+            	
+            this.render($node,this.verticalLines(), this.horizontalLines(),this.track(),this.explode());
+            
+            }
+            
+            
             this.chartType.onChange(function() {
-                this.render($node,this.verticalLines(), this.horizontalLines(),this.track());
+                
+                if(typeof window.Designer!='undefined'){
+            	this.render($node,this.verticalLines(), this.horizontalLines(),this.track(),this.explode());
+            	}else{
+                this.items.getCollection(function(elements) {
+                this.update(this.chartType(),$node, elements, this.verticalLines(), this.horizontalLines(), this.track(),this.explode());
+                
+                });
+               } 
             });
             this.track.onChange(function() {
-                this.render($node,this.verticalLines(), this.horizontalLines(),this.track());
-            
+               
+               if(typeof window.Designer!='undefined'){
+            	this.render($node,this.verticalLines(), this.horizontalLines(),this.track(),this.explode());
+            	}else{
+                this.items.getCollection(function(elements) {
+                this.update(this.chartType(),$node, elements, this.verticalLines(), this.horizontalLines(), this.track(),this.explode());
+                });
+               } 
             });
             this.verticalLines.onChange(function() {
-                this.render($node,this.verticalLines(), this.horizontalLines(),this.track());
+            	
+            	if(typeof window.Designer!='undefined'){
+            	this.render($node,this.verticalLines(), this.horizontalLines(),this.track(),this.explode());
+            	}else{
+                this.items.getCollection(function(elements) {
+                this.update(this.chartType(),$node, elements, this.verticalLines(), this.horizontalLines(), this.track(),this.explode());
+                });
+                
+            }
             
             }); 
             this.horizontalLines.onChange(function() {
-                this.render($node,this.verticalLines(), this.horizontalLines(),this.track());
-            
+                
+                if(typeof window.Designer!='undefined'){
+            	this.render($node,this.verticalLines(), this.horizontalLines(),this.track(),this.explode());
+            	}else{
+                this.items.getCollection(function(elements) {
+                this.update(this.chartType(),$node, elements, this.verticalLines(), this.horizontalLines(), this.track(),this.explode());
+                });
+            }
             });
+            this.explode.onChange(function() {
+                
+                if(typeof window.Designer!='undefined'){
+            	this.render($node,this.verticalLines(), this.horizontalLines(),this.track(),this.explode());
+            	}else{
+                this.items.getCollection(function(elements) {
+                this.update(this.chartType(),$node, elements, this.verticalLines(), this.horizontalLines(), this.track(),this.explode());
+                });
+            }
+            });
+            
+            
+            if(typeof window.Designer=='undefined'){
+            var x=this;
+            items.addListener("onCurrentElementChange", function (event) {
+            if(items.ID != null && x.chartType()=='pie'){
+                x.items.getCollection(function(elements) {
+                x.updatepie($node, elements, x.verticalLines(), x.horizontalLines(), x.track(),this.explode(),items.label);
+                
+                });            
+            }
+            });
+            }
+            
+           /* $node.attrchange({
+            callback: function(e) {
+		
+		    alert('ee');
+	        }
+            
+            });*/
             //this.items.getCollection(function(elements) { alert(elements.length)});
             /*this.items.addListener(function(event){
         if(event.eventKind === 'onAttributeChange') //only triggers this case
@@ -56,19 +124,20 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
     });*/
             this.items.onCollectionChange(function(elements) {
             	//debugger;
-                if (!elements.length) return;
-                if (this.chartType() == 'pie') this.updatepie($node, elements, this.verticalLines(), this.horizontalLines(), this.track());
-                else this.updateradar($node, elements);
+                if (!elements.length) {
+                	$node.innerHTML = ''; 
+                	return;
+                }
+                this.update(this.chartType(),$node, elements, this.verticalLines(), this.horizontalLines(), this.track(),this.explode());
             });
             
             /*this.items.onCurrentElementChange( function (event){
              //alert('t');
              });*/
         },
-        render: function(container,vl, hl, tr) {
+        render: function(container,vl, hl, tr,exp) {
             //var $node=$(this.node);
             //alert(this.chartType());
-            //if(typeof window.Designer!='undefined'){
             if (this.chartType() == 'pie') {
                 //(function basic_pie(container) {
 
@@ -77,8 +146,8 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
                     d2 = [[0, 3]],
                     d3 = [[0, 1.03]],
                     d4 = [[0, 3.5]],
-                    datas = [{data: d1,label: 'Comedy'},{data: d2,label: 'Action'}, {data: d3,label: 'Romance',pie: {explode: 50}}, {data: d4,label: 'Drama'}],
-                    options = {HtmlText: false,grid: {verticalLines: vl,horizontalLines: hl},xaxis: {showLabels: false},yaxis: {showLabels: false},pie: {show: true,explode: 6},mouse: {track: tr},legend: {position: 'se',backgroundColor: '#D2E8FF'}};
+                    datas = [{data: d1,label: 'Comedy'},{data: d2,label: 'Action'}, {data: d3,label: 'Romance',pie: {explode: exp + 50}}, {data: d4,label: 'Drama'}],
+                    options = {HtmlText: false,grid: {verticalLines: vl,horizontalLines: hl},xaxis: {showLabels: false},yaxis: {showLabels: false},pie: {show: true,explode: exp},mouse: {track: tr},legend: {position: 'se',backgroundColor: '#D2E8FF'}};
                     graph;
 
                     graph = Flotr.draw(container,datas ,options );
@@ -105,18 +174,30 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
                // })($node);
             }
         //}   else {this.items.mapElement( function (element) {alert(elements.length); });}
-        },
-        updatepie: function(container, elements, vl, hl, tr) {
+        }, 
+        updatepie: function(container, elements, vl, hl, tr,exp,explode) {
             var datas = [];
-            //debugger;
+            
             var i = 0;
             while (i < elements.length) {
+            	if(elements[i].label==explode){
+            	datas.push({
+                    data: [
+                        [0, elements[i].value]
+                    ],
+                    label: elements[i].label,
+                    pie : {
+                     explode : exp + 50
+                    }
+                });
+                } else {
                 datas.push({
                     data: [
                         [0, elements[i].value]
                     ],
                     label: elements[i].label
                 });
+                }
                 i++;
             }
             Flotr.draw(container, datas, {
@@ -133,7 +214,7 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
                 },
                 pie: {
                     show: true,
-                    explode: 6
+                    explode: exp
                 },
                 mouse: {
                     track: tr
@@ -155,7 +236,7 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
             var datas = [];
             var ticks = [];
             var i = 0;
-            var max = elements[0].value;
+            var max = 0;
             while (i < elements.length) {
                 if (elements[i].value > max) max = elements[i].value;
                 datas.push([i, elements[i].value]);
@@ -189,6 +270,16 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
                 }
             });
             //})(container);
+        },
+        update : function(type,container, elements, vl, hl, tr,exp) {
+            switch(type){
+            case 'pie':  
+            this.updatepie(container, elements, vl, hl, tr,exp);
+            break;
+            case 'radar':
+            this.updateradar(container, elements);
+            default :
+            }
         }
 
         //        ,
