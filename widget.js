@@ -165,7 +165,7 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
     });*/
            
             
-            this.dataSeries.onCollectionChange(function(elements) {
+            this.dataSeries.onPageChange(function(elements) {
             	//debugger;
                 if (!elements.length) {
                 	$node.innerHTML = ''; 
