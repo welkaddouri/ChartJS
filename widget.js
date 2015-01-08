@@ -140,15 +140,19 @@ WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
             
             
             if(typeof window.Designer=='undefined'){
-            var x=this;
-            dataSeries.addListener("onCurrentElementChange", function (event) {
-            if(dataSeries.ID != null && x.chartType()=='pie'){
-                x.dataSeries.getCollection(function(elements) {
-                x.updatepie($node, this.title(),this.subtitle(),elements, x.verticalLines(), x.horizontalLines(), x.track(),this.explode(),dataSeries.label);
-                
-                });            
-            }
-            });
+	            var x=this;
+	             
+	            if (dataSeries != null){
+	            	 
+		            dataSeries.addListener("onCurrentElementChange", function (event) {
+		            if(dataSeries.ID != null && x.chartType()=='pie'){
+		                x.dataSeries.getCollection(function(elements) {
+		                x.updatepie($node, this.title(),this.subtitle(),elements, x.verticalLines(), x.horizontalLines(), x.track(),this.explode(),dataSeries.label);
+		                
+		                });            
+		            }
+		            });
+	            }
             }
             
            /* $node.attrchange({
