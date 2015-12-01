@@ -1,4 +1,5 @@
 WAF.define('ChartJS', ['waf-core/widget'], function(widget) {
+	
 
     var ChartJS = widget.create('ChartJS', {
     	title: widget.property({
